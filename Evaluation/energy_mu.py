@@ -1,0 +1,156 @@
+import numpy as np
+import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
+import h5py
+import sys
+
+sys.path.append('/home/zhihao/WatChMaL')
+
+import analysis.regression as reg
+import analysis.utils.binning as bins
+import watchmal.utils.math as math
+
+
+data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
+idxs_path = "/home/zhihao/Data/WCTE_data_fixed/split_list_mu.npz"
+regression_run_dir = "/home/zhihao/Data/WCTE_data_fixed/Output/regression_run_2025-07-22_20:54:01"
+
+h5_file = h5py.File(data_path, "r")
+test_idxs = np.load(idxs_path)['test_idxs']
+train_idxs = np.load(idxs_path)['train_idxs']
+
+test_event_labels = np.array(h5_file['labels'])[test_idxs].squeeze()
+train_event_labels = np.array(h5_file['labels'])[train_idxs].squeeze()
+test_event_energies = np.array(h5_file['energies'])[test_idxs].squeeze()
+train_event_energies = np.array(h5_file['energies'])[train_idxs].squeeze()
+test_event_angles = np.array(h5_file['angles'])[test_idxs].squeeze()
+test_event_positions = np.array(h5_file['positions'])[test_idxs].squeeze()
+
+test_event_momenta = math.momentum_from_energy(test_event_energies, test_event_labels)
+
+tank_half_height = 271.4235 / 2
+tank_radius = 307.5926 / 2
+test_event_towall = math.towall(test_event_positions, test_event_angles, tank_half_height=tank_half_height, tank_radius=tank_radius)
+test_event_directions = math.direction_from_angles(test_event_angles)
+
+selection_mu_train = (train_event_labels == 2)
+
+energy_regression_output_mu = reg.WatChMaLEnergyRegression(
+  regression_run_dir,
+  "Muon Energy Regression",
+  true_momenta=test_event_momenta,
+  true_labels=test_event_labels,
+  indices=test_idxs,
+)
+
+
+if hasattr(energy_regression_output_mu, 'plot_training_progression'):
+  fig, ax = energy_regression_output_mu.plot_training_progression()
+  ax.set_yscale('log')
+  plt.savefig("MuonEnergyLoss.png")
+
+
+momentum_fractional_errors_mu = energy_regression_output_mu.momentum_fractional_errors
+momentum_resolution_mu = np.quantile(np.abs(momentum_fractional_errors_mu), 0.68)
+print(f"Overall muon momentum resolution (68th percentile of momentum fractional errors) = {momentum_resolution_mu * 100:.1f} %")
+
+print("muon momentum_fractional_errors min/max:", np.min(momentum_fractional_errors_mu), np.max(momentum_fractional_errors_mu))
+print("muon momentum_fractional_errors has NaN:", np.isnan(momentum_fractional_errors_mu).any())
+
+'''
+plt.figure(figsize=(8,5))
+plt.hist(test_event_energies, bins=50, color='orange', alpha=0.7)
+plt.title('Muon Energy Distribution in Test Set')
+plt.xlabel('True Muon Energy [MeV]')
+plt.ylabel('Number of Samples')
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("MuonEnergyDistribution_test.png")
+plt.close()
+
+plt.figure(figsize=(8,5))
+plt.hist(train_event_energies[selection_mu_train], bins=50, color='orange', alpha=0.7)
+plt.title('Muon Energy Distribution in Train Set')
+plt.xlabel('True Muon Energy [MeV]')
+plt.ylabel('Number of Samples')
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("MuonEnergyDistribution_train.png")
+plt.close()
+
+plt.figure(figsize=(8,5))
+plt.hist(test_event_towall, bins=50, color='orange', alpha=0.7)
+plt.title('Muon Distance to Detector Wall Distribution')
+plt.xlabel('Distance to Wall [cm]')
+plt.ylabel('Number of Samples')
+plt.grid(True)
+plt.tight_layout()
+plt.savefig("MuonDistanceToWallDistribution.png")
+plt.close()
+'''
+
+
+E_min_val_mu = test_event_energies.min()
+E_max_val_mu = test_event_energies.max()
+E_binning_mu = bins.get_binning(test_event_energies, 20, E_min_val_mu, E_max_val_mu)
+
+  
+towall_min_val_mu = test_event_towall.min()
+towall_max_val_mu = test_event_towall.max()
+towall_binning_mu = bins.get_binning(test_event_towall, 20, towall_min_val_mu, towall_max_val_mu)
+
+
+fig, ax = reg.plot_resolution_profile(
+  [energy_regression_output_mu],
+  'momentum_fractional_errors',
+  E_binning_mu,
+  x_label="True muon energy [MeV]",
+  y_label="Muon momentum resolution [%]",
+  y_lim=(0, 0.5),
+  errors=True,
+  x_errors=False
+)
+ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
+plt.savefig("MuonMomentumResolution_vs_Energy.png")
+
+
+fig, ax = reg.plot_resolution_profile(
+  [energy_regression_output_mu],
+  'momentum_fractional_errors',
+  towall_binning_mu,
+  x_label="Distance to detector wall in muon direction [cm]",
+  y_label="Muon momentum resolution [%]",
+  y_lim=(0, momentum_resolution_mu * 3),
+  errors=True,
+  x_errors=False
+)
+ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
+plt.savefig("MuonMomentumResolution_vs_Distance.png")
+
+
+fig, ax = reg.plot_bias_profile(
+  [energy_regression_output_mu],
+  'momentum_fractional_errors',
+  E_binning_mu,
+  x_label="True muon energy [MeV]",
+  y_label="Muon momentum bias [%]",
+  y_lim=(-0.50, 0.15),
+  errors=True,
+  x_errors=False
+)
+ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
+plt.savefig("MuonMomentumBias_vs_Energy.png")
+
+
+fig, ax = reg.plot_bias_profile(
+  [energy_regression_output_mu],
+  'momentum_fractional_errors',
+  towall_binning_mu,
+  x_label="Distance to detector wall in muon direction [cm]",
+  y_label="Muon momentum bias [%]",
+  y_lim=(-0.05, 0.05),
+  errors=True,
+  x_errors=False
+)
+ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
+plt.savefig("MuonMomentumBias_vs_Distance.png")
