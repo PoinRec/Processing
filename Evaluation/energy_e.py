@@ -53,7 +53,8 @@ energy_regression_output_e = reg.WatChMaLEnergyRegression(
 
 fig, ax = energy_regression_output_e.plot_training_progression()
 ax.set_yscale('log')
-plt.savefig(results_dir + "EnergyLoss.png")
+plt.tight_layout()
+plt.savefig(results_dir + "EnergyLoss.png", bbox_inches='tight')
 
 
 
@@ -85,7 +86,7 @@ plt.xlabel('True Electron Energy [MeV]')
 plt.ylabel('Number of Samples')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig(results_dir + "ElectronEnergyDistribution.png")
+plt.savefig(results_dir + "ElectronEnergyDistribution.png", bbox_inches='tight')
 plt.close()
 
 plt.figure(figsize=(8,5))
@@ -95,7 +96,7 @@ plt.xlabel('Distance to Wall [cm]')
 plt.ylabel('Number of Samples')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig(results_dir + "ElectronDistanceToWallDistribution.png")
+plt.savefig(results_dir + "ElectronDistanceToWallDistribution.png", bbox_inches='tight')
 plt.close()
 '''
 
@@ -121,7 +122,8 @@ fig, ax = reg.plot_resolution_profile(
   x_errors=False
 )
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
-plt.savefig(results_dir + "MomentumResolution_vs_Energy.png")
+plt.tight_layout()
+plt.savefig(results_dir + "MomentumResolution_vs_Energy.png", bbox_inches='tight')
 
 
 fig, ax = reg.plot_resolution_profile(
@@ -135,7 +137,8 @@ fig, ax = reg.plot_resolution_profile(
   x_errors=False
 )
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
-plt.savefig(results_dir + "MomentumResolution_vs_Distance.png")
+plt.tight_layout()
+plt.savefig(results_dir + "MomentumResolution_vs_Distance.png", bbox_inches='tight')
 
 
 fig, ax = reg.plot_bias_profile(
@@ -149,7 +152,8 @@ fig, ax = reg.plot_bias_profile(
   x_errors=False
 )
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
-plt.savefig(results_dir + "MomentumBias_vs_Energy.png")
+plt.tight_layout()
+plt.savefig(results_dir + "MomentumBias_vs_Energy.png", bbox_inches='tight')
 
 
 fig, ax = reg.plot_bias_profile(
@@ -163,6 +167,5 @@ fig, ax = reg.plot_bias_profile(
   x_errors=False
 )
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
-plt.savefig(results_dir + "MomentumBias_vs_Distance.png")
-
-
+plt.tight_layout()
+plt.savefig(results_dir + "MomentumBias_vs_Distance.png", bbox_inches='tight')

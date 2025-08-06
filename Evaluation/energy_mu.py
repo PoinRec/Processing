@@ -55,7 +55,8 @@ energy_regression_output_mu = reg.WatChMaLEnergyRegression(
 
 fig, ax = energy_regression_output_mu.plot_training_progression()
 ax.set_yscale('log')
-plt.savefig(results_dir + "EnergyLoss.png")
+plt.tight_layout()
+plt.savefig(results_dir + "EnergyLoss.png", bbox_inches='tight')
 
 
 momentum_fractional_errors = energy_regression_output_mu.momentum_fractional_errors
@@ -86,7 +87,7 @@ plt.xlabel('True Muon Energy [MeV]')
 plt.ylabel('Number of Samples')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig(results_dir + "MuonEnergyDistribution_test.png")
+plt.savefig(results_dir + "MuonEnergyDistribution_test.png", bbox_inches='tight')
 plt.close()
 
 plt.figure(figsize=(8,5))
@@ -96,7 +97,7 @@ plt.xlabel('True Muon Energy [MeV]')
 plt.ylabel('Number of Samples')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig(results_dir + "MuonEnergyDistribution_train.png")
+plt.savefig(results_dir + "MuonEnergyDistribution_train.png", bbox_inches='tight')
 plt.close()
 
 plt.figure(figsize=(8,5))
@@ -106,7 +107,7 @@ plt.xlabel('Distance to Wall [cm]')
 plt.ylabel('Number of Samples')
 plt.grid(True)
 plt.tight_layout()
-plt.savefig(results_dir + "MuonDistanceToWallDistribution.png")
+plt.savefig(results_dir + "MuonDistanceToWallDistribution.png", bbox_inches='tight')
 plt.close()
 '''
 
@@ -132,7 +133,8 @@ fig, ax = reg.plot_resolution_profile(
   x_errors=False
 )
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
-plt.savefig(results_dir + "MuonMomentumResolution_vs_Energy.png")
+plt.tight_layout()
+plt.savefig(results_dir + "MuonMomentumResolution_vs_Energy.png", bbox_inches='tight')
 
 
 fig, ax = reg.plot_resolution_profile(
@@ -146,7 +148,8 @@ fig, ax = reg.plot_resolution_profile(
   x_errors=False
 )
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
-plt.savefig(results_dir + "MuonMomentumResolution_vs_Distance.png")
+plt.tight_layout()
+plt.savefig(results_dir + "MuonMomentumResolution_vs_Distance.png", bbox_inches='tight')
 
 
 fig, ax = reg.plot_bias_profile(
@@ -160,7 +163,8 @@ fig, ax = reg.plot_bias_profile(
   x_errors=False
 )
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
-plt.savefig(results_dir + "MuonMomentumBias_vs_Energy.png")
+plt.tight_layout()
+plt.savefig(results_dir + "MuonMomentumBias_vs_Energy.png", bbox_inches='tight')
 
 
 fig, ax = reg.plot_bias_profile(
@@ -174,4 +178,5 @@ fig, ax = reg.plot_bias_profile(
   x_errors=False
 )
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
-plt.savefig(results_dir + "MuonMomentumBias_vs_Distance.png")
+plt.tight_layout()
+plt.savefig(results_dir + "MuonMomentumBias_vs_Distance.png", bbox_inches='tight')

@@ -45,7 +45,8 @@ position_regression_output_e = reg.WatChMaLPositionRegression(regression_run_dir
 
 fig, ax = position_regression_output_e.plot_training_progression()
 ax.set_yscale('log')
-plt.savefig(results_dir + "Loss.png")
+plt.tight_layout()
+plt.savefig(results_dir + "Loss.png", bbox_inches='tight')
 
 with open(results_dir + "resolution.txt", "w") as f:
   position_resolution = np.quantile(position_regression_output_e.position_3d_errors, 0.68)
@@ -72,21 +73,27 @@ towall_binning = bins.get_binning(test_event_towall, 20, towall_min_val, towall_
 
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_3d_errors', E_binning, x_label="True particle energy [MeV]", y_label="Position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig(results_dir + "PositionResolution-E.png")
+plt.tight_layout()
+plt.savefig(results_dir + "PositionResolution-E.png", bbox_inches='tight')
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_longitudinal_errors', E_binning, x_label="True particle energy [MeV]", y_label="Longitudinal position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig(results_dir + "LongitudinalPositionResolution-E.png")
+plt.tight_layout()
+plt.savefig(results_dir + "LongitudinalPositionResolution-E.png", bbox_inches='tight')
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_transverse_errors', E_binning, x_label="True particle energy [MeV]", y_label="Transverse position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig(results_dir + "TransversePositionResolution-E.png")
+plt.tight_layout()
+plt.savefig(results_dir + "TransversePositionResolution-E.png", bbox_inches='tight')
 
 
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_3d_errors', towall_binning, x_label="Distance to detector wall in particle direction [cm]", y_label="Position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig(results_dir + "PositionResolution-d.png")
+plt.tight_layout()
+plt.savefig(results_dir + "PositionResolution-d.png", bbox_inches='tight')
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_longitudinal_errors', towall_binning, x_label="Distance to detector wall in particle direction [cm]", y_label="Longitudinal position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig(results_dir + "LongitudinalPositionResolution-d.png")
+plt.tight_layout()
+plt.savefig(results_dir + "LongitudinalPositionResolution-d.png", bbox_inches='tight')
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_transverse_errors', towall_binning, x_label="Distance to detector wall in particle direction [cm]", y_label="Transverse position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig(results_dir + "TransversePositionResolution-d.png")
+plt.tight_layout()
+plt.savefig(results_dir + "TransversePositionResolution-d.png", bbox_inches='tight')

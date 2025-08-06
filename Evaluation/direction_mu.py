@@ -45,7 +45,8 @@ direction_regression_output_mu = reg.WatChMaLDirectionRegression(regression_run_
 
 fig, ax = direction_regression_output_mu.plot_training_progression()
 ax.set_yscale('log')
-plt.savefig(results_dir + "Loss.png")
+plt.tight_layout()
+plt.savefig(results_dir + "Loss.png", bbox_inches='tight')
 
 
 with open(results_dir + "resolution.txt", "w") as f:
@@ -68,8 +69,10 @@ towall_binning = bins.get_binning(test_event_towall, 20, towall_min_val, towall_
 
 
 fig, ax = reg.plot_resolution_profile([direction_regression_output_mu], 'direction_errors', E_binning, x_label="True particle energy [MeV]", y_label="Direction resolution [°]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig(results_dir + "AngleResolution-E.png")
+plt.tight_layout()
+plt.savefig(results_dir + "AngleResolution-E.png", bbox_inches='tight')
 
 
 fig, ax = reg.plot_resolution_profile([direction_regression_output_mu], 'direction_errors', towall_binning, x_label="Distance to detector wall in particle direction [cm]", y_label="Direction resolution [°]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig(results_dir + "AngleResolution-d.png")
+plt.tight_layout()
+plt.savefig(results_dir + "AngleResolution-d.png", bbox_inches='tight')
