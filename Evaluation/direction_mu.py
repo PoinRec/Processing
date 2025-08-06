@@ -3,12 +3,21 @@ import matplotlib
 import matplotlib.pyplot as plt
 import h5py
 import sys
+import argparse
 
 sys.path.append('/home/zhihao/WatChMaL')
 
 data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
 idxs_path = "/home/zhihao/Data/WCTE_data_fixed/split_list_mu.npz"
-regression_run_dir = "/home/zhihao/Data/WCTE_data_fixed/Output/direction_mu_2025-07-31_14:24:38"
+
+parser = argparse.ArgumentParser(description="Evaluation script")
+parser.add_argument("-r", "--run_dir", type=str, required=True, help="Path to regression run directory")
+args = parser.parse_args()
+regression_run_dir = args.run_dir
+results_dir = regression_run_dir + "/results/"
+
+import os
+os.makedirs(results_dir, exist_ok=True)
 
 tank_half_height= 271.4235 / 2
 tank_radius= 307.5926 / 2
@@ -36,11 +45,13 @@ direction_regression_output_mu = reg.WatChMaLDirectionRegression(regression_run_
 
 fig, ax = direction_regression_output_mu.plot_training_progression()
 ax.set_yscale('log')
-plt.savefig("Loss.png")
+plt.savefig(results_dir + "Loss.png")
 
 
-direction_resolution = np.quantile(direction_regression_output_mu.direction_errors, 0.68)
-print(f"Overall direction resolution (68th percentile of direction errors) = {direction_resolution} degrees")
+with open(results_dir + "resolution.txt", "w") as f:
+  direction_resolution = np.quantile(direction_regression_output_mu.direction_errors, 0.68)
+  print(f"Overall direction resolution (68th percentile of direction errors) = {direction_resolution} °")
+  f.write(f"Overall direction resolution (68th percentile of direction errors) = {direction_resolution} °")
 
 
 
@@ -57,8 +68,8 @@ towall_binning = bins.get_binning(test_event_towall, 20, towall_min_val, towall_
 
 
 fig, ax = reg.plot_resolution_profile([direction_regression_output_mu], 'direction_errors', E_binning, x_label="True particle energy [MeV]", y_label="Direction resolution [°]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig("AngleResolution-E.png")
+plt.savefig(results_dir + "AngleResolution-E.png")
 
 
 fig, ax = reg.plot_resolution_profile([direction_regression_output_mu], 'direction_errors', towall_binning, x_label="Distance to detector wall in particle direction [cm]", y_label="Direction resolution [°]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig("AngleResolution-d.png")
+plt.savefig(results_dir + "AngleResolution-d.png")

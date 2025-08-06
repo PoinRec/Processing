@@ -3,12 +3,21 @@ import matplotlib
 import matplotlib.pyplot as plt
 import h5py
 import sys
+import argparse
 
 sys.path.append('/home/zhihao/WatChMaL')
 
 data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
 idxs_path = "/home/zhihao/Data/WCTE_data_fixed/split_list_e.npz"
-regression_run_dir = "/home/zhihao/Data/WCTE_data_fixed/Output_Aug/e/position/position_e_02_larger_lr"
+
+parser = argparse.ArgumentParser(description="Evaluation script")
+parser.add_argument("-r", "--run_dir", type=str, required=True, help="Path to regression run directory")
+args = parser.parse_args()
+regression_run_dir = args.run_dir
+results_dir = regression_run_dir + "/results/"
+
+import os
+os.makedirs(results_dir, exist_ok=True)
 
 tank_half_height= 271.4235 / 2
 tank_radius= 307.5926 / 2
@@ -36,17 +45,20 @@ position_regression_output_e = reg.WatChMaLPositionRegression(regression_run_dir
 
 fig, ax = position_regression_output_e.plot_training_progression()
 ax.set_yscale('log')
-plt.savefig("Loss.png")
+plt.savefig(results_dir + "Loss.png")
 
-
-position_resolution = np.quantile(position_regression_output_e.position_3d_errors, 0.68)
-print(f"Overall position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
-
-position_resolution = np.quantile(position_regression_output_e.position_longitudinal_errors, 0.68)
-print(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
-
-position_resolution = np.quantile(position_regression_output_e.position_transverse_errors, 0.68)
-print(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
+with open(results_dir + "resolution.txt", "w") as f:
+  position_resolution = np.quantile(position_regression_output_e.position_3d_errors, 0.68)
+  print(f"Overall position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
+  f.write(f"Overall position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
+  
+  position_resolution = np.quantile(position_regression_output_e.position_longitudinal_errors, 0.68)
+  print(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
+  f.write(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
+  
+  position_resolution = np.quantile(position_regression_output_e.position_transverse_errors, 0.68)
+  print(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
+  f.write(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
 
 E_min_val = test_event_energies.min()
 E_max_val = test_event_energies.max()
@@ -60,21 +72,21 @@ towall_binning = bins.get_binning(test_event_towall, 20, towall_min_val, towall_
 
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_3d_errors', E_binning, x_label="True particle energy [MeV]", y_label="Position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig("PositionResolution-E.png")
+plt.savefig(results_dir + "PositionResolution-E.png")
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_longitudinal_errors', E_binning, x_label="True particle energy [MeV]", y_label="Longitudinal position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig("LongitudinalPositionResolution-E.png")
+plt.savefig(results_dir + "LongitudinalPositionResolution-E.png")
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_transverse_errors', E_binning, x_label="True particle energy [MeV]", y_label="Transverse position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig("TransversePositionResolution-E.png")
+plt.savefig(results_dir + "TransversePositionResolution-E.png")
 
 
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_3d_errors', towall_binning, x_label="Distance to detector wall in particle direction [cm]", y_label="Position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig("PositionResolution-d.png")
+plt.savefig(results_dir + "PositionResolution-d.png")
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_longitudinal_errors', towall_binning, x_label="Distance to detector wall in particle direction [cm]", y_label="Longitudinal position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig("LongitudinalPositionResolution-d.png")
+plt.savefig(results_dir + "LongitudinalPositionResolution-d.png")
 
 fig, ax = reg.plot_resolution_profile([position_regression_output_e], 'position_transverse_errors', towall_binning, x_label="Distance to detector wall in particle direction [cm]", y_label="Transverse position resolution [cm]", y_lim=(0,15), errors=True, x_errors=False)
-plt.savefig("TransversePositionResolution-d.png")
+plt.savefig(results_dir + "TransversePositionResolution-d.png")
