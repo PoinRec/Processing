@@ -75,7 +75,7 @@ E_max_val = test_event_energies.max()
 E_binning, E_bin_indices = bins.get_binning(test_event_energies, 20, E_min_val, E_max_val)
 
 
-clas.plot_efficiency_profile([classification_output], (E_binning, E_bin_indices), select_labels=signal_labels, x_label="True energy [MeV]", y_label="FC events PID efficiency [%]", errors=True, x_errors=False, y_lim=(50,100))
+clas.plot_efficiency_profile([classification_output], (E_binning, E_bin_indices), select_labels=signal_labels, x_label="True energy [MeV]", y_label="FC events PID efficiency [%]", errors=True, x_errors=False, y_lim=(0,100))
 plt.tight_layout()
 plt.savefig(results_dir + "e-E.png", bbox_inches='tight')
 
@@ -88,6 +88,6 @@ towall_max_val = test_e_towall.max()
 
 
 towall_binning = bins.get_binning(test_event_towall, 20, towall_min_val, towall_max_val)
-clas.plot_efficiency_profile([classification_output], towall_binning, select_labels=signal_labels, x_label="Distance to detector wall in particle direction [cm]", y_label="FC events PID efficiency [%]", errors=True, x_errors=False, y_lim=(50,100))
+clas.plot_efficiency_profile([classification_output], towall_binning, select_labels=signal_labels, x_label="Distance to detector wall in particle direction [cm]", y_label="FC events PID efficiency [%]", errors=True, x_errors=False, y_lim=(0,100))
 plt.tight_layout()
 plt.savefig(results_dir + "e-towall.png", bbox_inches='tight')
