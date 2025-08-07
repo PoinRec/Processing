@@ -55,13 +55,17 @@ with open(results_dir + "resolution.txt", "w") as f:
   print(f"Overall position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
   f.write(f"Overall position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
   
-  position_resolution = np.quantile(position_regression_output_mu.position_longitudinal_errors, 0.68)
-  print(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
-  f.write(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
+  position_resolution_t = np.quantile(position_regression_output_mu.position_transverse_errors, 0.68)
+  print(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution_t} cm")
+  f.write(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution_t} cm")
   
-  position_resolution = np.quantile(position_regression_output_mu.position_transverse_errors, 0.68)
-  print(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
-  f.write(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution} cm")
+  position_resolution_l = np.quantile(position_regression_output_mu.position_longitudinal_errors, 0.68)
+  print(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution_l} cm")
+  f.write(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution_l} cm")
+  
+  position_bias_l = np.mean(position_regression_output_mu.position_longitudinal_errors)
+  print(f"Longitudinal position bias (mean of 3D position errors) = {position_bias_l} cm")
+  f.write(f"Longitudinal position bias (mean of 3D position errors) = {position_bias_l} cm\n")
 
 
 
