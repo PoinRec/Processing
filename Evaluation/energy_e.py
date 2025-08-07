@@ -60,17 +60,27 @@ plt.savefig(results_dir + "EnergyLoss.png", bbox_inches='tight')
 
 momentum_fractional_errors = energy_regression_output_e.momentum_fractional_errors
 momentum_resolution = np.quantile(np.abs(momentum_fractional_errors), 0.68)
+momentum_fractional_bias = np.mean(momentum_fractional_errors)
+
+
+momentum_residuals = energy_regression_output_e.momentum_residuals
+momentum_resolution_r = np.quantile(np.abs(momentum_residuals), 0.68)
+momentum_bias = np.mean(momentum_residuals)
+
 
 with open(results_dir + "resolution.txt", "w") as f:
   print(f"Overall momentum resolution (68th percentile of momentum fractional errors) = {momentum_resolution * 100:.1f} %")
   f.write(f"Overall momentum resolution (68th percentile of momentum fractional errors) = {momentum_resolution * 100:.1f} %\n")
-
-momentum_residuals = energy_regression_output_e.momentum_residuals
-momentum_resolution_r = np.quantile(np.abs(momentum_residuals), 0.68)
-
-with open(results_dir + "resolution.txt", "a") as f:
+  
   print(f"Overall momentum resolution (68th percentile of momentum residuals) = {momentum_resolution_r:.1f} MeV")
   f.write(f"Overall momentum resolution (68th percentile of momentum residuals) = {momentum_resolution_r:.1f} MeV\n")
+  
+  print(f"Overall momentum fractional bias = {momentum_fractional_bias * 100:.1f} %")
+  f.write(f"Overall momentum fractional bias = {momentum_fractional_bias * 100:.1f} %\n")
+  
+  print(f"Overall momentum bias = {momentum_bias:.1f} MeV")
+  f.write(f"Overall momentum bias = {momentum_bias:.1f} MeV\n")
+  
   
   print("momentum_fractional_errors min/max:", np.min(energy_regression_output_e.momentum_fractional_errors), np.max(energy_regression_output_e.momentum_fractional_errors))
   print("momentum_fractional_errors has NaN:", np.isnan(energy_regression_output_e.momentum_fractional_errors).any())
