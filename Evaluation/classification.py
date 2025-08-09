@@ -7,7 +7,7 @@ import argparse
 
 sys.path.append('/home/zhihao/WatChMaL')
 
-data_path = "Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
+data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
 idxs_path = "/home/zhihao/Data/WCTE_data_fixed/split_list_classification.npz"
 
 parser = argparse.ArgumentParser(description="Evaluation script")
