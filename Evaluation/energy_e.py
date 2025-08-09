@@ -69,17 +69,17 @@ momentum_bias = np.mean(momentum_residuals)
 
 
 with open(results_dir + "resolution.txt", "w") as f:
-  print(f"Overall momentum resolution (68th percentile of momentum fractional errors) = {momentum_resolution * 100:.1f} %")
-  f.write(f"Overall momentum resolution (68th percentile of momentum fractional errors) = {momentum_resolution * 100:.1f} %\n")
+  print(f"Overall momentum resolution (68th percentile of momentum fractional errors) = {momentum_resolution * 100:.2f} %")
+  f.write(f"Overall momentum resolution (68th percentile of momentum fractional errors) = {momentum_resolution * 100:.2f} %\n")
   
-  print(f"Overall momentum resolution (68th percentile of momentum residuals) = {momentum_resolution_r:.1f} MeV")
-  f.write(f"Overall momentum resolution (68th percentile of momentum residuals) = {momentum_resolution_r:.1f} MeV\n")
+  print(f"Overall momentum resolution (68th percentile of momentum residuals) = {momentum_resolution_r:.2f} MeV")
+  f.write(f"Overall momentum resolution (68th percentile of momentum residuals) = {momentum_resolution_r:.2f} MeV\n")
   
-  print(f"Overall momentum fractional bias = {momentum_fractional_bias * 100:.1f} %")
-  f.write(f"Overall momentum fractional bias = {momentum_fractional_bias * 100:.1f} %\n")
+  print(f"Overall momentum fractional bias = {momentum_fractional_bias * 100:.2f} %")
+  f.write(f"Overall momentum fractional bias = {momentum_fractional_bias * 100:.2f} %\n")
   
-  print(f"Overall momentum bias = {momentum_bias:.1f} MeV")
-  f.write(f"Overall momentum bias = {momentum_bias:.1f} MeV\n")
+  print(f"Overall momentum bias = {momentum_bias:.2f} MeV")
+  f.write(f"Overall momentum bias = {momentum_bias:.2f} MeV\n")
   
   
   print("momentum_fractional_errors min/max:", np.min(energy_regression_output_e.momentum_fractional_errors), np.max(energy_regression_output_e.momentum_fractional_errors))
