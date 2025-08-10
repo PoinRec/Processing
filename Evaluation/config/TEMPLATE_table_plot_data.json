@@ -1,0 +1,7 @@
+{
+  "col1_name": "Muon",
+  "col2_name": "Electron",
+  "col1_data": [6.46, 5.67, 2.69, 0.17, 2.17, 2.48, 0.21, null],
+  "col2_data": [6.83, 4.96, 4.17, 0.63, 4.12, 8.80, -2.00, 0.93],
+  "output_path": "/home/zhihao/WCTE_2024.png"
+}

@@ -11,7 +11,8 @@ Scripts for visualization and valuation of trained model.
 
 ### Usage (Except for `table_plot.py`)
 ```bash
-*.py -r path/to/run/dir
+cd Processing/Evaluation
+python *.py -r path/to/run/dir
 ```
 
 Specially, for scripts associated with classification, like `classification.py` and `FC_*.py`, you can add an extra argument `-e` to adjust the mis-identification rate you want for plots and the output files.
@@ -20,6 +21,14 @@ Specially, for scripts associated with classification, like `classification.py` 
 
 Scripts to generate an image of a table helping you quickly summarize the performance of the model you trained.
 
+Usage: 
+```bash
+cd Processing/Evaluation
+export TABLE_PLOT_DATA=path/to/your/json/file
+python Processing/Evaluation/table_plot.py
+```
+
+There's a template under `Processing/Evaluation/config` that can tell you how to write your own json file. Plus, please name your json file `table_plot_data_*.json` so that it can be ignored by `.gitignore`.
 
 ## H5
 
