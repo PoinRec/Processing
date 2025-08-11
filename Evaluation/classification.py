@@ -8,11 +8,11 @@ import argparse
 sys.path.append('/home/zhihao/WatChMaL')
 
 data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
-idxs_path = "/home/zhihao/Data/WCTE_data_fixed/split_list_classification.npz"
+idxs_path = "/home/zhihao/Data/WCTE_data_fixed/Splitting/split_list_classification.npz"
 
 parser = argparse.ArgumentParser(description="Evaluation script")
-parser.add_argument("-r", "--run_dir", type=str, required=True, help="Path to classification run directory")
-parser.add_argument("-e", "--efficiency", type=float, default=0.001, help="Desired muon mis-PID rate for profile plots")
+parser.add_argument("run_dir", type=str, help="Path to classification run directory")
+parser.add_argument("efficiency", type=float, nargs="?", default=0.001, help="Desired muon mis-PID rate for profile plots")
 args = parser.parse_args()
 classification_run_dir = args.run_dir
 results_dir = classification_run_dir + "/results/"

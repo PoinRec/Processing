@@ -1,9 +1,13 @@
 import h5py
 import numpy as np
+import argparse
+import os
 
-# Input and output file paths
-input_file = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
-output_file = "FC_wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
+parser = argparse.ArgumentParser(description="Convert fully_contained from bool to int64 in HDF5 file")
+parser.add_argument("input_file", type=str, help="Path to the input HDF5 file")
+args = parser.parse_args()
+input_file = args.input_file
+output_file = os.path.join(os.path.dirname(input_file), "FC_" + os.path.basename(input_file))
 
 # Open the original file in read mode and the new file in write mode
 with h5py.File(input_file, "r") as fin, h5py.File(output_file, "w") as fout:

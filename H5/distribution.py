@@ -1,8 +1,16 @@
 import h5py
 import matplotlib.pyplot as plt
 import numpy as np
+import argparse
+import os
 
-data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
+parser = argparse.ArgumentParser(description="Generate various distributions from HDF5 data")
+parser.add_argument("data_path", type=str, help="Path to the input HDF5 file")
+args = parser.parse_args()
+data_path = args.data_path
+
+output_dir = os.path.join(os.path.dirname(data_path), "Distribution")
+os.makedirs(output_dir, exist_ok=True)
 
 with h5py.File(data_path, "r") as f:
   angles = np.array(f["angles"][:])            # shape (N, 2)
@@ -35,7 +43,7 @@ plt.ylabel("Label")
 plt.yticks([1, 2], ["Electron", "Muon"])
 plt.ylim(0.5, 2.5)
 plt.grid(True)
-plt.savefig("labels_order_distribution.png")
+plt.savefig(os.path.join(output_dir, "labels_order_distribution.png"))
 plt.close()
 
 # === Check position distribution along data index ===
@@ -52,7 +60,7 @@ for i, coord in enumerate(coords):
 
 
 plt.tight_layout()
-plt.savefig("position_order_distribution.png")
+plt.savefig(os.path.join(output_dir, "position_order_distribution.png"))
 plt.close()
 
 
@@ -73,7 +81,7 @@ plt.ylabel("Phi [rad]")
 plt.grid(True)
 
 plt.tight_layout()
-plt.savefig("angle_order_distribution.png")
+plt.savefig(os.path.join(output_dir, "angle_order_distribution.png"))
 plt.close()
 
 
@@ -85,7 +93,7 @@ plt.xlabel("Energy [MeV]")
 plt.ylabel("Counts")
 plt.title("Energy Distribution by Particle Type")
 plt.legend()
-plt.savefig("energy_distribution.png")
+plt.savefig(os.path.join(output_dir, "energy_distribution.png"))
 plt.close()
 
 
@@ -107,7 +115,7 @@ plt.ylabel("Counts")
 plt.title("phi Distribution")
 plt.legend()
 
-plt.savefig("angle_distribution.png")
+plt.savefig(os.path.join(output_dir, "angle_distribution.png"))
 plt.close()
 
 
@@ -121,7 +129,7 @@ for i, axis in enumerate(['r', 'y', 'theta']):
   plt.ylabel("Counts")
   plt.legend()
 plt.suptitle("Position Distribution")
-plt.savefig("position_distribution.png")
+plt.savefig(os.path.join(output_dir, "position_distribution.png"))
 plt.close()
 
 
@@ -139,5 +147,5 @@ plt.xlabel("Hit Time [ns]")
 plt.ylabel("Counts (log scale)")
 plt.title("Hit Time Distribution")
 
-plt.savefig("hit_charge_time_distribution.png")
+plt.savefig(os.path.join(output_dir, "hit_charge_time_distribution.png"))
 plt.close()

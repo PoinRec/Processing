@@ -1,17 +1,24 @@
 import numpy as np
 import h5py
 import matplotlib.pyplot as plt
+import argparse
+import os
 
-# Load split indices
-split = np.load("/home/zhihao/Data/WCTE_data_fixed/split_list_mu_FC.npz")
+parser = argparse.ArgumentParser(description="Plot FC statistics for train/validation/test splits")
+parser.add_argument("split_path", type=str, help="Path to the .npz file containing split indices")
+parser.add_argument("data_path", type=str, help="Path to the HDF5 file containing energies and FC labels")
+args = parser.parse_args()
+
+split = np.load(args.split_path)
 train_idxs = split['train_idxs']
 val_idxs = split['val_idxs']
 test_idxs = split['test_idxs']
 
-# Load data from h5 file
-with h5py.File("/home/zhihao/Data/WCTE_data_fixed/FC_wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5", "r") as f:
+with h5py.File(args.data_path, "r") as f:
   energies = f['energies'][:]  # shape: (N,)
   labels = f['fully_contained'][:]      # Assume FC label, 0 or 1
+
+output_dir = os.path.dirname(args.data_path)
 
 # Define energy bins
 energy_bins = np.linspace(0, np.max(energies), 30)
@@ -58,7 +65,7 @@ def plot_split(split_name, idxs):
   ax2.patch.set_visible(False)
 
   plt.tight_layout()
-  plt.savefig(f"{split_name}_fc_stats.png")
+  plt.savefig(os.path.join(output_dir, f"{split_name}_fc_stats.png"))
   plt.show()
 
 # Plot figures

@@ -1,7 +1,12 @@
 import h5py
 import numpy as np
+import argparse
 
-data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
+parser = argparse.ArgumentParser(description="Check contents of an HDF5 file")
+parser.add_argument("data_path", type=str, help="Path to the HDF5 file")
+args = parser.parse_args()
+
+data_path = args.data_path
 h5_file = h5py.File(data_path, "r")
 for key, array in h5_file.items():
   print(f"{key:16s} array has shape {array.shape}")

@@ -8,10 +8,10 @@ import argparse
 sys.path.append('/home/zhihao/WatChMaL')
 
 data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
-idxs_path = "/home/zhihao/Data/WCTE_data_fixed/split_list_mu.npz"
+idxs_path = "/home/zhihao/Data/WCTE_data_fixed/Splitting/split_list_mu.npz"
 
 parser = argparse.ArgumentParser(description="Evaluation script")
-parser.add_argument("-r", "--run_dir", type=str, required=True, help="Path to regression run directory")
+parser.add_argument("run_dir", type=str, required=True, help="Path to muon position regression run directory")
 args = parser.parse_args()
 regression_run_dir = args.run_dir
 results_dir = regression_run_dir + "/results/"

@@ -1,9 +1,19 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import argparse
+import os
 
 
-# Load PMT positions from geometry file
-geo = np.load('/home/zhihao/Data/WCTE_data_fixed/geofile_wcte.npz')
+parser = argparse.ArgumentParser(description="Check PMT orientation from geometry file")
+parser.add_argument("geo_filename", type=str, help="Path to the geometry .npz file")
+args = parser.parse_args()
+
+geo_filename = args.geo_filename
+geo = np.load(geo_filename)
+
+output_dir = os.path.join(os.path.dirname(geo_filename), "Checking")
+os.makedirs(output_dir, exist_ok=True)
+
 positions = geo['position']  # shape: (1843, 3)
 channels = np.arange(positions.shape[0]) % 19  # channel ID within each mPMT
 
@@ -38,7 +48,7 @@ ax.set_xlabel('X [cm]')
 ax.set_ylabel('Y [cm]')
 ax.set_zlabel('Z [cm]')
 ax.set_title('3D PMT Positions (colored by channel ID)')
-plt.savefig('3D PMT Positions (colored by channel ID)')
+plt.savefig(os.path.join(output_dir, '3D_PMT_Positions_colored_by_channel_ID.png'))
 
 # Apply mask: only keep PMTs where y > 100
 mask = y > 100
@@ -55,7 +65,7 @@ plt.title('XZ Projection of PMTs (y > 100)')
 plt.colorbar(label='PMT Channel (0-18)')
 plt.axis('equal')
 plt.grid(True)
-plt.savefig('XZ Projection of PMT Positions y>100')
+plt.savefig(os.path.join(output_dir, 'XZ_Projection_PMT_Positions_y_gt_100.png'))
 
 
 # Apply mask: only keep PMTs where y < -100
@@ -73,4 +83,4 @@ plt.title('XZ Projection of PMTs (y < -100)')
 plt.colorbar(label='PMT Channel (0-18)')
 plt.axis('equal')
 plt.grid(True)
-plt.savefig('XZ Projection of PMT Positions y<-100')
+plt.savefig(os.path.join(output_dir, 'XZ_Projection_PMT_Positions_y_lt_-100.png'))

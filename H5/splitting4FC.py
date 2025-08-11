@@ -1,13 +1,20 @@
 import h5py
 import numpy as np
 import sys
+import argparse
+import os
 
 sys.path.append('/home/zhihao/WatChMaL')
 import watchmal.utils.math as math
 
+parser = argparse.ArgumentParser(description="Split FC dataset into train/val/test for e and mu")
+parser.add_argument("data_path", type=str, help="Path to the input HDF5 file")
+args = parser.parse_args()
+data_path = args.data_path
 
-data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
-idxs_paths = ["split_list_e_FC.npz", "split_list_mu_FC.npz"]
+output_dir = os.path.join(os.path.dirname(data_path), "Splitting")
+os.makedirs(output_dir, exist_ok=True)
+idxs_paths = [os.path.join(output_dir, "split_list_e_FC.npz"), os.path.join(output_dir, "split_list_mu_FC.npz")]
 
 nhit_threshold = 10
 nhit_test_threshod = 25
