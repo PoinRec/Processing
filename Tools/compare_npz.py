@@ -1,4 +1,5 @@
 import numpy as np
+import sys
 
 def compare_npz_files(file1, file2):
   data1 = np.load(file1)
@@ -33,7 +34,9 @@ def compare_npz_files(file1, file2):
 
   return all_equal
 
-# Example usage:
-file_path_1 = "/home/zhihao/new_split_list2.npz"
-file_path_2 = "/home/zhihao/new_split_list.npz"
-compare_npz_files(file_path_1, file_path_2)
+
+if __name__ == "__main__":
+    if len(sys.argv) != 3:
+        print("Usage: python compare_npz.py file1.npz file2.npz")
+        sys.exit(1)
+    compare_npz_files(sys.argv[1], sys.argv[2])
