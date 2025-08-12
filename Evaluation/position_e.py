@@ -57,7 +57,7 @@ with open(results_dir + "resolution.txt", "w") as f:
   print(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution_t} cm")
   f.write(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution_t} cm\n")
   
-  position_resolution_l = np.quantile(position_regression_output_e.position_longitudinal_errors, 0.68)
+  position_resolution_l = np.quantile(np.abs(position_regression_output_e.position_longitudinal_errors), 0.68)
   print(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution_l} cm")
   f.write(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution_l} cm\n")
   

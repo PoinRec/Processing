@@ -11,7 +11,7 @@ data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1Ge
 idxs_path = "/home/zhihao/Data/WCTE_data_fixed/Splitting/split_list_mu.npz"
 
 parser = argparse.ArgumentParser(description="Evaluation script")
-parser.add_argument("run_dir", type=str, required=True, help="Path to muon position regression run directory")
+parser.add_argument("run_dir", type=str, help="Path to muon position regression run directory")
 args = parser.parse_args()
 regression_run_dir = args.run_dir
 results_dir = regression_run_dir + "/results/"
@@ -41,7 +41,7 @@ test_event_directions = math.direction_from_angles(test_event_angles)
 
 
 # Muon events
-position_regression_output_mu = reg.WatChMaLPositionRegression(regression_run_dir, "muon Regression", test_event_positions, test_event_directions, test_idxs,)
+position_regression_output_mu = reg.WatChMaLPositionRegression(regression_run_dir, "Muon Regression", test_event_positions, test_event_directions, test_idxs,)
 
 
 fig, ax = position_regression_output_mu.plot_training_progression()
@@ -59,7 +59,7 @@ with open(results_dir + "resolution.txt", "w") as f:
   print(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution_t} cm")
   f.write(f"Transverse position resolution (68th percentile of 3D position errors) = {position_resolution_t} cm\n")
   
-  position_resolution_l = np.quantile(position_regression_output_mu.position_longitudinal_errors, 0.68)
+  position_resolution_l = np.quantile(np.abs(position_regression_output_mu.position_longitudinal_errors), 0.68)
   print(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution_l} cm")
   f.write(f"Longitudinal position resolution (68th percentile of 3D position errors) = {position_resolution_l} cm\n")
   

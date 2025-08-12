@@ -40,7 +40,7 @@ test_event_towall = math.towall(test_event_positions, test_event_angles, tank_ha
 test_event_directions = math.direction_from_angles(test_event_angles)
 
 # Muon events
-direction_regression_output_mu = reg.WatChMaLDirectionRegression(regression_run_dir, "muon Regression", test_event_directions, test_idxs,)
+direction_regression_output_mu = reg.WatChMaLDirectionRegression(regression_run_dir, "Muon Regression", test_event_directions, test_idxs,)
 
 
 fig, ax = direction_regression_output_mu.plot_training_progression()

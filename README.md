@@ -25,7 +25,7 @@ Usage:
 ```bash
 cd Processing/Evaluation
 export TABLE_PLOT_DATA=path/to/your/json/file
-python Processing/Evaluation/table_plot.py
+python table_plot.py
 ```
 
 There's a template under `Processing/Evaluation/config` that can tell you how to write your own json file. Plus, please name your json file `table_plot_data_*.json` so that it can be ignored by `.gitignore`.

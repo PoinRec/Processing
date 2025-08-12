@@ -8,7 +8,7 @@ import argparse
 sys.path.append('/home/zhihao/WatChMaL')
 
 data_path = "/home/zhihao/Data/WCTE_data_fixed/FC_wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
-idxs_path = "/home/zhihao/Data/WCTE_data_fixed/Splitting/_e_FC.npz"
+idxs_path = "/home/zhihao/Data/WCTE_data_fixed/Splitting/split_list_e_FC.npz"
 
 parser = argparse.ArgumentParser(description="Evaluation script")
 parser.add_argument("run_dir", type=str, help="Path to classification run directory")
@@ -37,7 +37,7 @@ test_event_positions = np.array(h5_file['positions'])[test_idxs].squeeze()
 
 fully_contained = np.array(h5_file['fully_contained'])[test_idxs].squeeze()
 
-classification_output = clas.WatChMaLClassification(classification_run_dir, "ResNet-50 PID", fully_contained, test_idxs)
+classification_output = clas.WatChMaLClassification(classification_run_dir, "ResNet-50 FC classification", fully_contained, test_idxs)
 
 fig, ax1, ax2 = classification_output.plot_training_progression(y_loss_lim=(0,10))
 plt.tight_layout()
