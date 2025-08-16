@@ -29,9 +29,13 @@ theta = np.arctan2(z, x)
 
 cos = np.cos(angles[:, 0])
 
-# Masks for particle types
-electron_mask = labels == 1
-muon_mask = labels == 2
+
+# Particle label mapping and masks
+# 0 = Gamma, 1 = Electron, 2 = Muon, 3 = Pion
+label_map = {0: "Gamma", 1: "Electron", 2: "Muon", 3: "Pion"}
+present_codes = sorted(int(c) for c in np.unique(labels))
+present_map = {c: label_map.get(int(c), f"Label{int(c)}") for c in present_codes}
+masks = {present_map[c]: (labels == c) for c in present_codes}
 
 
 # === Check label distribution along data index ===
@@ -40,8 +44,8 @@ plt.plot(labels, marker='.', linestyle='None', markersize=1)
 plt.title("Labels distribution along data index")
 plt.xlabel("Sample index")
 plt.ylabel("Label")
-plt.yticks([1, 2], ["Electron", "Muon"])
-plt.ylim(0.5, 2.5)
+plt.yticks(present_codes, [present_map[c] for c in present_codes])
+plt.ylim(min(present_codes) - 0.5, max(present_codes) + 0.5)
 plt.grid(True)
 plt.savefig(os.path.join(output_dir, "labels_order_distribution.png"))
 plt.close()
@@ -87,8 +91,8 @@ plt.close()
 
 # Energy Distribution
 plt.figure()
-plt.hist(energies[electron_mask], bins=100, alpha=0.7, label="Electron")
-plt.hist(energies[muon_mask], bins=100, alpha=0.7, label="Muon")
+for label, mask in masks.items():
+    plt.hist(energies[mask], bins=100, alpha=0.7, label=label)
 plt.xlabel("Energy [MeV]")
 plt.ylabel("Counts")
 plt.title("Energy Distribution by Particle Type")
@@ -100,16 +104,16 @@ plt.close()
 # Angular Distribution
 plt.figure(figsize=(12,5))
 plt.subplot(1, 2, 1)
-plt.hist(cos[electron_mask], bins=100, alpha=0.7, label="Electron")
-plt.hist(cos[muon_mask], bins=100, alpha=0.7, label="Muon")
+for label, mask in masks.items():
+    plt.hist(cos[mask], bins=100, alpha=0.7, label=label)
 plt.xlabel("cos(theta)")
 plt.ylabel("Counts")
 plt.title("cos(theta) Distribution")
 plt.legend()
 
 plt.subplot(1, 2, 2)
-plt.hist(angles[electron_mask, 1], bins=100, alpha=0.7, label="Electron")
-plt.hist(angles[muon_mask, 1], bins=100, alpha=0.7, label="Muon")
+for label, mask in masks.items():
+    plt.hist(angles[mask, 1], bins=100, alpha=0.7, label=label)
 plt.xlabel("phi")
 plt.ylabel("Counts")
 plt.title("phi Distribution")
@@ -122,12 +126,12 @@ plt.close()
 # Position Distribution(r, theta, z)
 plt.figure(figsize=(15,4))
 for i, axis in enumerate(['r', 'y', 'theta']):
-  plt.subplot(1, 3, i + 1)
-  plt.hist(data[i][electron_mask], bins=100, alpha=0.7, label="Electron")
-  plt.hist(data[i][muon_mask], bins=100, alpha=0.7, label="Muon")
-  plt.xlabel(f"Position {axis} [cm]" if axis != 'theta' else "theta [rad]")
-  plt.ylabel("Counts")
-  plt.legend()
+    plt.subplot(1, 3, i + 1)
+    for label, mask in masks.items():
+        plt.hist(data[i][mask], bins=100, alpha=0.7, label=label)
+    plt.xlabel(f"Position {axis} [cm]" if axis != 'theta' else "theta [rad]")
+    plt.ylabel("Counts")
+    plt.legend()
 plt.suptitle("Position Distribution")
 plt.savefig(os.path.join(output_dir, "position_distribution.png"))
 plt.close()

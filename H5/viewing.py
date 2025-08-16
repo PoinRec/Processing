@@ -28,7 +28,7 @@ event_display = display.CNNmPMTEventDisplay(h5file=data_path, mpmt_positions_fil
 
 colors={"color_norm": matplotlib.colors.LogNorm(), "color_map": matplotlib.pyplot.cm.turbo}
 
-title = f"Electron event #{event_id_to_plot}"
+title = f"Event #{event_id_to_plot}"
 fig, ax = event_display.plot_event_2d(event_id_to_plot, channel="charge", color_label="Charge", title=title, color_norm=matplotlib.colors.LogNorm(), color_map=matplotlib.pyplot.cm.turbo)
 fig.savefig(os.path.join(output_dir, f"event_{event_id_to_plot}_charge.png"))
 
