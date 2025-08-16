@@ -68,7 +68,7 @@ for label, count in zip(label_set, label_counts):
   testing_selection = testing_selection[:int(validation_proportion_start * selected_count)]
   test_indices = selected_indices[:int(validation_proportion_start * selected_count)]
   testing_indices = np.concatenate([testing_indices, test_indices[testing_selection]])
-  print(f'After label {label}, test_selected_count: {len(testing_indices)}')
+  print(f'label: {label}, test_selected_count: {len(test_indices[testing_selection])}')
   
 
 np.savez(idxs_path,

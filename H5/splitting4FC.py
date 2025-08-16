@@ -7,14 +7,24 @@ import os
 sys.path.append('/home/zhihao/WatChMaL')
 import watchmal.utils.math as math
 
-parser = argparse.ArgumentParser(description="Split FC dataset into train/val/test for e and mu")
+parser = argparse.ArgumentParser(description="Split FC dataset into train/val/test for different labels")
 parser.add_argument("data_path", type=str, help="Path to the input HDF5 file")
 args = parser.parse_args()
 data_path = args.data_path
 
 output_dir = os.path.join(os.path.dirname(data_path), "Splitting")
 os.makedirs(output_dir, exist_ok=True)
-idxs_paths = [os.path.join(output_dir, "split_list_e_FC.npz"), os.path.join(output_dir, "split_list_mu_FC.npz")]
+label_map = {0: "gamma", 1: "e", 2: "mu", 3: "pi"}
+
+
+h5_file = h5py.File(data_path, "r")
+
+event_labels = np.array(h5_file['labels'])
+label_set, label_counts = np.unique(event_labels, return_counts=True)
+print(f'Label set: {label_set}, Counts: {label_counts}')
+
+
+idxs_paths = [os.path.join(output_dir, f"split_list_{label_map[label]}_FC.npz") for label in label_set]
 
 nhit_threshold = 10
 nhit_test_threshold = 25
@@ -25,13 +35,6 @@ training_proportion = 0.8
 
 tank_half_height= 271.4235 / 2
 tank_radius= 307.5926 / 2
-
-
-h5_file = h5py.File(data_path, "r")
-
-event_labels = np.array(h5_file['labels'])
-label_set, label_counts = np.unique(event_labels, return_counts=True)
-print(f'Label set: {label_set}, Counts: {label_counts}')
 
 
 # to determine number of hits per event, take the difference between adjacent entries in the event hits index
@@ -64,7 +67,7 @@ for label, count, idxs_path in zip(label_set, label_counts, idxs_paths):
   testing_selection = testing_selection[:int(validation_proportion_start * selected_count)]
   test_indices = selected_indices[:int(validation_proportion_start * selected_count)]
   testing_indices = test_indices[testing_selection]
-  print(f'label {label}, test_selected_count: {len(testing_indices)}')
+  print(f'label: {label}, test_selected_count: {len(testing_indices)}')
   
   np.savez(idxs_path,
   test_idxs=testing_indices,
