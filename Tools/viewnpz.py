@@ -12,6 +12,6 @@ def view_npz(filename, num_elements=10):
 
 if __name__ == "__main__":
   if len(sys.argv) < 2:
-    print("Usage: python3 /home/zhihao/Processing/Mapping/viewnpz.py /home/zhihao/Data/WCTE_data_fixed/geofile_wcte.npz")
+    print("Usage: python3 viewnpz.py path/to/your/geometry_file.npz")
   else:
     view_npz(sys.argv[1])

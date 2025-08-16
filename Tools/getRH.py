@@ -25,6 +25,6 @@ def main(file_path):
 
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: python getRH.py geofile_wcte.npz")
+        print("Usage: python getRH.py path/to/your/geometry_file.npz")
         sys.exit(1)
     main(sys.argv[1])

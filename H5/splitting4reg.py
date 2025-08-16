@@ -7,8 +7,6 @@ import os
 sys.path.append('/home/zhihao/WatChMaL')
 import watchmal.utils.math as math
 
-
-
 parser = argparse.ArgumentParser(description="Split regression dataset into train/val/test for e and mu")
 parser.add_argument("data_path", type=str, help="Path to the input HDF5 file")
 args = parser.parse_args()

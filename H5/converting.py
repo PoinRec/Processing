@@ -4,7 +4,7 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser(description="Convert fully_contained from bool to int64 in HDF5 file")
-parser.add_argument("input_file", type=str, help="Path to the input HDF5 file")
+parser.add_argument("data_path", type=str, help="Path to the input HDF5 file")
 args = parser.parse_args()
 input_file = args.input_file
 output_file = os.path.join(os.path.dirname(input_file), "FC_" + os.path.basename(input_file))

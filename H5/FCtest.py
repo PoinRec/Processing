@@ -5,8 +5,8 @@ import argparse
 import os
 
 parser = argparse.ArgumentParser(description="Plot FC statistics for train/validation/test splits")
-parser.add_argument("split_path", type=str, help="Path to the .npz file containing split indices")
 parser.add_argument("data_path", type=str, help="Path to the HDF5 file containing energies and FC labels")
+parser.add_argument("split_path", type=str, help="Path to the .npz file containing split indices")
 args = parser.parse_args()
 
 split = np.load(args.split_path)
@@ -66,7 +66,6 @@ def plot_split(split_name, idxs):
 
   plt.tight_layout()
   plt.savefig(os.path.join(output_dir, f"{split_name}_fc_stats.png"))
-  plt.show()
 
 # Plot figures
 plot_split('train', train_idxs)
