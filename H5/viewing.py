@@ -12,7 +12,7 @@ parser = argparse.ArgumentParser(description="View an event from HDF5 data with 
 parser.add_argument("data_path", type=str, help="Path to the HDF5 file")
 parser.add_argument("mpmt_positions_filename", type=str, help="Path to the mPMT positions .npz file")
 parser.add_argument("geo_filename", type=str, help="Path to the geometry .npz file")
-parser.add_argument("event_id_to_plot", type=int, help="Event ID to plot")
+parser.add_argument("event_id_to_plot", type=int, nargs="?", default=42, help="Event ID to plot (default: 42)")
 args = parser.parse_args()
 
 data_path = args.data_path
