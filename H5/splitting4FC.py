@@ -17,8 +17,8 @@ os.makedirs(output_dir, exist_ok=True)
 idxs_paths = [os.path.join(output_dir, "split_list_e_FC.npz"), os.path.join(output_dir, "split_list_mu_FC.npz")]
 
 nhit_threshold = 10
-nhit_test_threshod = 25
-# towall_test_threshod = 100
+nhit_test_threshold = 25
+# towall_test_threshold = 100
 
 validation_proportion = 0.1
 training_proportion = 0.8
@@ -41,7 +41,7 @@ nhits = np.diff(event_hits_index, append=h5_file["hit_pmt"].shape[0])
 
 # train on fully contained events with more than (nhit_threshold) hits
 selection = (nhits > nhit_threshold)
-test_selection = (nhits > nhit_test_threshod)
+test_selection = (nhits > nhit_test_threshold)
 
 event_indices = np.arange(len(event_labels))
 

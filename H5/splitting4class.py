@@ -17,8 +17,8 @@ os.makedirs(output_dir, exist_ok=True)
 idxs_path = os.path.join(output_dir, "split_list_classification.npz")
 
 nhit_threshold = 10
-nhit_test_threshod = 25
-towall_test_threshod = 100
+nhit_test_threshold = 25
+towall_test_threshold = 100
 
 validation_proportion = 0.1
 training_proportion = 0.8
@@ -45,7 +45,7 @@ event_towall = math.towall(event_positions, event_angles, tank_half_height=tank_
 
 # train on events with more than (nhit_threshold) hits
 selection = (nhits > nhit_threshold)
-test_selection = (nhits > nhit_test_threshod) & (event_towall > towall_test_threshod) & fully_contained
+test_selection = (nhits > nhit_test_threshold) & (event_towall > towall_test_threshold) & fully_contained
 
 event_indices = np.arange(len(event_labels))
 
