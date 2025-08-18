@@ -1,0 +1,91 @@
+import numpy as np
+import matplotlib
+import matplotlib.pyplot as plt
+import h5py
+import sys
+import argparse
+
+sys.path.append('/home/zhihao/WatChMaL')
+
+data_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_merged_10k_e-_10k_gamma/wcsim_wCDS_e-_gamma_Uniform_0_1200MeV_dighit.h5"
+idxs_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_merged_10k_e-_10k_gamma/Splitting/split_list_gamma_e.npz"
+
+parser = argparse.ArgumentParser(description="Evaluation script")
+parser.add_argument("run_dir", type=str, help="Path to classification run directory")
+parser.add_argument("efficiency", type=float, nargs="?", default=0.1, help="Desired gamma mis-PID rate for profile plots")
+args = parser.parse_args()
+classification_run_dir = args.run_dir
+results_dir = classification_run_dir + "/results/"
+
+import os
+os.makedirs(results_dir, exist_ok=True)
+
+tank_half_height= 271.4235 / 2
+tank_radius= 307.5926 / 2
+
+h5_file = h5py.File(data_path, "r")
+
+import analysis.classification as clas
+import analysis.utils.binning as bins
+import watchmal.utils.math as math
+
+test_idxs  = np.load(idxs_path)['test_idxs']
+test_event_labels = np.array(h5_file['labels'])[test_idxs].squeeze()
+test_event_energies = np.array(h5_file['energies'])[test_idxs].squeeze()
+test_event_angles = np.array(h5_file['angles'])[test_idxs].squeeze()
+test_event_positions = np.array(h5_file['positions'])[test_idxs].squeeze()
+
+test_e_energies = test_event_energies[test_event_labels == 1]
+
+classification_output = clas.WatChMaLClassification(classification_run_dir, "ResNet-50 PID", test_event_labels, test_idxs)
+
+
+fig, ax1, ax2 = classification_output.plot_training_progression(y_loss_lim=(0,10))
+plt.tight_layout()
+plt.savefig(results_dir + "Accuracy&Loss.png", bbox_inches='tight')
+
+
+signal_labels = [1] # electrons
+background_labels = [0] # gamma
+clas.plot_rocs([classification_output], signal_labels, background_labels, x_label="Gamma PID efficiency (mis-PID rate)", y_label="Electron PID efficiency", mode='efficiency', auc_digits=5)
+plt.tight_layout()
+plt.savefig(results_dir + "ROC.png", bbox_inches='tight')
+
+desired_gamma_efficiency = args.efficiency
+
+
+with open(results_dir + "ROC_Points.txt", "w") as f:
+  pid_cut = classification_output.cut_with_fixed_efficiency(signal_labels, background_labels, desired_gamma_efficiency, select_labels=background_labels)
+
+  e_accept = np.mean(pid_cut[test_event_labels==1]) * 100
+  gamma_accept = np.mean(pid_cut[test_event_labels==0]) * 100
+
+  print(f"\n{e_accept}% of electrons are accepted")
+  print(f"{gamma_accept}% of gamma are accepted\n")
+
+  f.write(f"Gamma Rejection Rate: {(1 - desired_gamma_efficiency) * 100} %\n")
+  f.write(f"{e_accept}% of electrons are accepted\n")
+  f.write(f"{gamma_accept}% of gamma are accepted\n\n")
+
+
+E_min_val = test_e_energies.min()
+E_max_val = test_e_energies.max()
+E_binning, E_bin_indices = bins.get_binning(test_event_energies, 20, E_min_val, E_max_val)
+
+
+clas.plot_efficiency_profile([classification_output], (E_binning, E_bin_indices), select_labels=signal_labels, x_label="True energy [MeV]", y_label="Electron signal PID efficiency [%]", errors=True, x_errors=False, y_lim=(0,100))
+plt.tight_layout()
+plt.savefig(results_dir + "e-E.png", bbox_inches='tight')
+
+
+test_event_towall = math.towall(test_event_positions, test_event_angles, tank_half_height=tank_half_height, tank_radius=tank_radius)
+test_e_towall = test_event_towall[test_event_labels == 1]
+
+towall_min_val = test_e_towall.min()
+towall_max_val = test_e_towall.max()
+
+
+towall_binning = bins.get_binning(test_event_towall, 20, towall_min_val, towall_max_val)
+clas.plot_efficiency_profile([classification_output], towall_binning, select_labels=signal_labels, x_label="Distance to detector wall in particle direction [cm]", y_label="Electron signal PID efficiency [%]", errors=True, x_errors=False, y_lim=(0,100))
+plt.tight_layout()
+plt.savefig(results_dir + "e-towall.png", bbox_inches='tight')
