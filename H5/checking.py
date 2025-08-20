@@ -19,3 +19,11 @@ for label, count in zip(label_set, label_counts):
 fully_contained = h5_file['fully_contained']
 print("fully_contained dtype:", fully_contained.dtype)
 print("first 10 entries:", fully_contained[:10])
+
+energies = np.array(h5_file['energies']).squeeze()
+for label in label_set:
+  mask = (event_labels == label).squeeze()
+  min_energy = energies[mask].min()
+  max_energy = energies[mask].max()
+  print(f"Label {label} has min energy: {min_energy:.4f}")
+  print(f"Label {label} has max energy: {max_energy:.4f}")
