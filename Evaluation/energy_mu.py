@@ -13,7 +13,7 @@ import watchmal.utils.math as math
 
 
 data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
-idxs_path = "/home/zhihao/Data/WCTE_data_fixed/Splitting/split_list_mu.npz"
+idxs_path = "/home/zhihao/Data/WCTE_data_fixed/Splitting/split_list_mu_regression.npz"
 
 parser = argparse.ArgumentParser(description="Evaluation script")
 parser.add_argument("run_dir", type=str, help="Path to muon energy regression run directory")
