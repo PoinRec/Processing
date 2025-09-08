@@ -27,11 +27,11 @@ event_angles = np.array(h5_file['angles']).squeeze()
 event_positions = np.array(h5_file['positions']).squeeze()
 labels = np.array(h5_file['fully_contained'])
 
+h5_file.close()
+
 event_towall = math.towall(event_positions, event_angles, tank_half_height=tank_half_height, tank_radius=tank_radius)
 
 output_dir = os.path.dirname(args.split_path) + "/FC_stats"
-
-import os
 os.makedirs(output_dir, exist_ok=True)
 
 # Define towall bins

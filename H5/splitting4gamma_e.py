@@ -18,7 +18,7 @@ idxs_path = os.path.join(output_dir, "split_list_gamma_e.npz")
 
 nhit_threshold = 10
 nhit_test_threshold = 25
-# towall_test_threshold = 100
+towall_test_threshold = 100
 
 validation_proportion = 0.1
 training_proportion = 0.8
@@ -41,11 +41,13 @@ event_positions = np.array(h5_file['positions']).squeeze()
 
 fully_contained = np.array(h5_file['fully_contained'])
 
+h5_file.close()
+
 event_towall = math.towall(event_positions, event_angles, tank_half_height=tank_half_height, tank_radius=tank_radius)
 
 # train on events with more than (nhit_threshold) hits
 selection = (nhits > nhit_threshold)
-test_selection = (nhits > nhit_test_threshold)
+test_selection = (nhits > nhit_test_threshold) & (event_towall > towall_test_threshold) & fully_contained
 
 event_indices = np.arange(len(event_labels))
 

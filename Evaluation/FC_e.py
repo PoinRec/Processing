@@ -37,6 +37,8 @@ test_event_positions = np.array(h5_file['positions'])[test_idxs].squeeze()
 
 fully_contained = np.array(h5_file['fully_contained'])[test_idxs].squeeze()
 
+h5_file.close()
+
 classification_output = clas.WatChMaLClassification(classification_run_dir, "ResNet-50 FC classification", fully_contained, test_idxs)
 
 fig, ax1, ax2 = classification_output.plot_training_progression(y_loss_lim=(0,10))

@@ -16,7 +16,7 @@ with h5py.File(input_file, "r") as fin, h5py.File(output_file, "w") as fout:
     
     # Convert 'fully_contained' from bool to int64
     if key == "fully_contained":
-        data = data.astype(np.int64)
+      data = data.astype(np.int64)
     
     # Copy dataset to the new file
     fout.create_dataset(key, data=data)

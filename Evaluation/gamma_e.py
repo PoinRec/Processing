@@ -7,8 +7,8 @@ import argparse
 
 sys.path.append('/home/zhihao/WatChMaL')
 
-data_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_merged_10k_e-_10k_gamma/wcsim_wCDS_e-_gamma_Uniform_0_1200MeV_dighit.h5"
-idxs_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_merged_10k_e-_10k_gamma/Splitting/split_list_gamma_e.npz"
+data_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_10M_e-_10M_gamma/wcsim_wCDS_10mil_e-_10mil_gamma_Uniform_0_1200MeV_dighit.h5"
+idxs_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_10M_e-_10M_gamma/Splitting/split_list_gamma_e.npz"
 
 parser = argparse.ArgumentParser(description="Evaluation script")
 parser.add_argument("run_dir", type=str, help="Path to classification run directory")
@@ -34,6 +34,8 @@ test_event_labels = np.array(h5_file['labels'])[test_idxs].squeeze()
 test_event_energies = np.array(h5_file['energies'])[test_idxs].squeeze()
 test_event_angles = np.array(h5_file['angles'])[test_idxs].squeeze()
 test_event_positions = np.array(h5_file['positions'])[test_idxs].squeeze()
+
+h5_file.close()
 
 test_e_energies = test_event_energies[test_event_labels == 1]
 

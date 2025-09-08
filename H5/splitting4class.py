@@ -41,6 +41,8 @@ event_positions = np.array(h5_file['positions']).squeeze()
 
 fully_contained = np.array(h5_file['fully_contained'])
 
+h5_file.close()
+
 event_towall = math.towall(event_positions, event_angles, tank_half_height=tank_half_height, tank_radius=tank_radius)
 
 # train on events with more than (nhit_threshold) hits

@@ -35,6 +35,8 @@ train_event_energies = np.array(h5_file['energies'])[train_idxs].squeeze()
 test_event_angles = np.array(h5_file['angles'])[test_idxs].squeeze()
 test_event_positions = np.array(h5_file['positions'])[test_idxs].squeeze()
 
+h5_file.close()
+
 test_event_momenta = math.momentum_from_energy(test_event_energies, test_event_labels)
 
 tank_half_height = 271.4235 / 2

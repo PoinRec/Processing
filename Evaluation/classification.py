@@ -35,6 +35,8 @@ test_event_energies = np.array(h5_file['energies'])[test_idxs].squeeze()
 test_event_angles = np.array(h5_file['angles'])[test_idxs].squeeze()
 test_event_positions = np.array(h5_file['positions'])[test_idxs].squeeze()
 
+h5_file.close()
+
 test_e_energies = test_event_energies[test_event_labels == 1]
 
 classification_output = clas.WatChMaLClassification(classification_run_dir, "ResNet-50 PID", test_event_labels, test_idxs)

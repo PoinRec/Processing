@@ -34,7 +34,7 @@ test_event_energies = np.array(h5_file['energies'])[test_idxs].squeeze()
 test_event_angles = np.array(h5_file['angles'])[test_idxs].squeeze()
 test_event_positions = np.array(h5_file['positions'])[test_idxs].squeeze()
 
-
+h5_file.close()
 
 test_event_towall = math.towall(test_event_positions, test_event_angles, tank_half_height=tank_half_height, tank_radius=tank_radius)
 test_event_directions = math.direction_from_angles(test_event_angles)

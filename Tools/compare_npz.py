@@ -36,7 +36,7 @@ def compare_npz_files(file1, file2):
 
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print("Usage: python compare_npz.py file1.npz file2.npz")
-        sys.exit(1)
-    compare_npz_files(sys.argv[1], sys.argv[2])
+  if len(sys.argv) != 3:
+    print("Usage: python compare_npz.py file1.npz file2.npz")
+    sys.exit(1)
+  compare_npz_files(sys.argv[1], sys.argv[2])

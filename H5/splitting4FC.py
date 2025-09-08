@@ -41,6 +41,8 @@ tank_radius= 307.5926 / 2
 event_hits_index = np.array(h5_file["event_hits_index"])
 nhits = np.diff(event_hits_index, append=h5_file["hit_pmt"].shape[0])
 
+h5_file.close()
+
 
 # train on fully contained events with more than (nhit_threshold) hits
 selection = (nhits > nhit_threshold)

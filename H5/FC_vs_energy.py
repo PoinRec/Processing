@@ -19,8 +19,6 @@ with h5py.File(args.data_path, "r") as f:
   labels = f['fully_contained'][:]      # Assume FC label, 0 or 1
 
 output_dir = os.path.dirname(args.split_path) + "/FC_stats"
-
-import os
 os.makedirs(output_dir, exist_ok=True)
 
 # Define energy bins

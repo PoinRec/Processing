@@ -21,6 +21,9 @@ print("fully_contained dtype:", fully_contained.dtype)
 print("first 10 entries:", fully_contained[:10])
 
 energies = np.array(h5_file['energies']).squeeze()
+
+h5_file.close()
+
 for label in label_set:
   mask = (event_labels == label).squeeze()
   min_energy = energies[mask].min()
