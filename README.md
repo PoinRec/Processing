@@ -83,7 +83,7 @@ python *.py path/to/your/h5/file (Some/potential/extra/path)
 
 -  `distribution.py`: a script to plot the data count distribution ersus various different labels (The output images will be saved under `Distribution/` which is under the same folder as your `.h5` file).
 
-- `FCtest.py`: a script to plot the FC dependence of energy (its existence is due to some *historical* reason).
+- `FC*.py`: a script to plot the FC dependence of energy / towall or 2D dependence of both (`FC_check.py`).
 
 - `split4*.py`: different splitting scripts for different purpose (All splitting `.npz` file will be saved under `Splitting/`).
 
@@ -117,6 +117,7 @@ python *.py path/to/your/geometry/file (Some/potential/extra/path/to/your/mpmt/p
 
 Toolkit, in case you need them some day.
 
+- `check_root.py`: check the `.root` files (especially gamma), which has something to do with the primary particles and pair production ($\gamma \longrightarrow e^- + e^+$). When generating $\gamma$, the primary particles for GPS is simply $\gamma$ so it has something wrong when converting the `.root` files into `.npz` files. You should use gamma-conversion mode so that the primary particles is $e^-/e^+$.
 
 - `compare_npz.py`: to compare if two `.npz` files are identical, and to list their difference if they are not identical.
 
