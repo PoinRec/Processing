@@ -87,6 +87,8 @@ python *.py path/to/your/h5/file (Some/potential/extra/path)
 
 - `split4*.py`: different splitting scripts for different purpose (All splitting `.npz` file will be saved under `Splitting/`).
 
+- `dummy_splitting.py`: Code to generate a dummy splitting file (just `test_idxs`, consistent with `event_ids` in the `.h5` file) for prediction tasks.
+
 - `viewing.py`: a script to view a specific event on the unfolded image (Pictures will be saved under `EventPics/`).
 
 
