@@ -10,7 +10,7 @@ sys.path.append('/home/zhihao/WatChMaL')
 data_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_10M_e-_10M_gamma/wcsim_wCDS_10mil_e-_10mil_gamma_Uniform_0_1200MeV_dighit.h5"
 idxs_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_10M_e-_10M_gamma/Splitting/split_list_gamma_e.npz"
 
-parser = argparse.ArgumentParser(description="Evaluation script")
+parser = argparse.ArgumentParser(description="Evaluation script for electron/gamma classification")
 parser.add_argument("run_dir", type=str, help="Path to classification run directory")
 parser.add_argument("efficiency", type=float, nargs="?", default=0.1, help="Desired gamma mis-PID rate for profile plots")
 args = parser.parse_args()

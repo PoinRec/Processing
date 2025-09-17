@@ -10,7 +10,7 @@ sys.path.append('/home/zhihao/WatChMaL')
 data_path = "/home/zhihao/Data/WCTE_data_fixed/wcte_CDS_pgun_e-_3M_mu-_3M_0to1GeV_fixedFC.h5"
 idxs_path = "/home/zhihao/Data/WCTE_data_fixed/Splitting/split_list_classification.npz"
 
-parser = argparse.ArgumentParser(description="Evaluation script")
+parser = argparse.ArgumentParser(description="Evaluation script for electron/muon classification")
 parser.add_argument("run_dir", type=str, help="Path to classification run directory")
 parser.add_argument("efficiency", type=float, nargs="?", default=0.001, help="Desired muon mis-PID rate for profile plots")
 args = parser.parse_args()
