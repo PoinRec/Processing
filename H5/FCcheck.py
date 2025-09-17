@@ -31,21 +31,35 @@ label_map = {0: "gamma", 1: "e", 2: "mu", 3: "pi"}
 towalls = math.towall(positions, angles, tank_half_height=tank_half_height, tank_radius=tank_radius)
 
 for label in label_set:
+  mask = FC & (labels == label)
+
+  x = towalls[mask]
+  y = energies[mask]
+
+  initial_count = len(x)
+
+  valid = np.isfinite(x) & np.isfinite(y)
+  x = x[valid]
+  y = y[valid]
+  
+  final_count = len(x)
+  print(f"Label: {label_map[label]}, Initial count: {initial_count}, Valid count: {final_count}")
+
+  if len(x) == 0:
+    print(f"No valid events for {label_map[label]}")
+    continue
+
   plt.figure(figsize=(10, 6))
-  plt.hist2d(
-    towalls[FC & (labels == label)],
-    energies[FC & (labels == label)],
-    bins=(100, 100)
-  )
+  plt.hist2d(x, y, bins=(100, 100))
   plt.colorbar(label="counts per bin")
   plt.xlabel("towall (cm)")
   plt.ylabel("energy (MeV)")
-  plt.title("2D histogram of (towall, energy) for FC events")
+  plt.title(f"2D histogram of (towall, energy) for FC events ({label_map[label]})")
   plt.tight_layout()
   plt.savefig(os.path.join(output_dir, f"{label_map[label]}_energy_distribution.png"))
   plt.close()
   print(f"Saved 2D histogram for {label_map[label]}")
-  
+
   
   
   

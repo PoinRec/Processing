@@ -1,7 +1,7 @@
 # Processing
 A personal collection of scripts for converting, visualizing, and evaluating models in the WatChMaL framework.
 
-All scripts need same environment as the [**WatChMaL** repo](https://github.com/WatChMaL/WatChMaL), so maybe you need to run them in a container that the whole WatChMaL ML process can work in.
+All scripts (except for `Tools/check_root.py` which also needs environment for `pyROOT`) need same environment as the [**WatChMaL** repo](https://github.com/WatChMaL/WatChMaL), so maybe you need to run them in a container that the whole WatChMaL ML process can work in.
 
 ## process_all.sh
 A `.sh` script that can help you do all possible checkings and viewings when you first get brand-new data. But if you want to use it you must have the same container image `larcv2_ub2204-cuda121-torch251-larndsim-2025-03-20.sif` as me, or you can modify the image's name by yourself in this script.
