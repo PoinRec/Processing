@@ -181,3 +181,21 @@ fig, ax = reg.plot_bias_profile(
 ax.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
 plt.tight_layout()
 plt.savefig(results_dir + "MomentumBias_vs_Distance.png", bbox_inches='tight')
+
+plt.figure(figsize=(8, 6))
+sc = plt.scatter(
+  test_event_energies,
+  100 * energy_regression_output_e.momentum_fractional_errors,
+  c=test_event_towall,  # 颜色由 towall 决定
+  cmap="viridis",
+  s=2, alpha=0.5
+)
+plt.axhline(0, color="red", linestyle="--", linewidth=1)
+plt.xlabel("True particle energy [MeV]")
+plt.ylabel("Momentum fractional error [%]")
+plt.title("Momentum Fractional Error vs. True Energy (per event)")
+plt.colorbar(sc, label="Distance to wall [cm]")  # 加颜色条
+plt.grid(True, alpha=0.3)
+plt.tight_layout()
+plt.savefig(results_dir + "MomentumErrorScatter_vs_Energy_colormap.png", bbox_inches="tight")
+plt.close()
