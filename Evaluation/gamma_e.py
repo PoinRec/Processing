@@ -7,8 +7,8 @@ import argparse
 
 sys.path.append('/home/zhihao/WatChMaL')
 
-data_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_10M_e-_10M_gamma/wcsim_wCDS_10mil_e-_10mil_gamma_Uniform_0_1200MeV_dighit.h5"
-idxs_path = "/home/zhihao/Data/WCTE_data_Zhihao/0002_10M_e-_10M_gamma/Splitting/split_list_gamma_e.npz"
+data_path = "/home/zhihao/Data/WCTE_data_Zhihao/0003_10M_e-_10M_fixed_gamma/wcsim_wCDS_10mil_e-_Uniform_0_1200MeV_10mil_gamma_Uniform_10_1210MeV_dighit.h5"
+idxs_path = "/home/zhihao/Data/WCTE_data_Zhihao/0003_10M_e-_10M_fixed_gamma/Splitting/split_list_gamma_e.npz"
 
 parser = argparse.ArgumentParser(description="Evaluation script for electron/gamma classification")
 parser.add_argument("run_dir", type=str, help="Path to classification run directory")
