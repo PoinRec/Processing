@@ -114,6 +114,16 @@ python *.py path/to/your/geometry/file (Some/potential/extra/path/to/your/mpmt/p
 
 - `viewing.py`: a script to view the 3D structure of the ditector with numbers next to the mPMTs.
 
+## Predictions
+Script for analysis of WatChMaL output in prediction mode.
+
+### Usage
+
+```bash
+python *.py path/to/your/output/folder (path/to/your/classification_result.npz)
+```
+
+I've add a position argument of classification result path for analysis of non-classification tasks, but I don't use that path in current code. In the future, there might be some PID cuts based on that.
 
 ## Tools
 

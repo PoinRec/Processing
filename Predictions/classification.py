@@ -94,12 +94,47 @@ plt.legend(handles=[legend_ge1, legend_lt1], loc="best")
 plt.savefig(args.output_path + "/results/ratio_scatter.png", dpi=300)
 
 print(f"{len(e_indices)} unique events with ratio < 1")
+
+'''
 print("indices & ratio values (first occurrence, sorted by index):")
 for i, (idx, val) in enumerate(zip(e_indices, e_values)):
   print(f"{i:4d}: index={idx}, ratio={val}")
+'''
 
 np.savez(
   args.output_path + "/results/classification_result.npz",
   e_idxs=e_indices, e_vals=e_values,
   mu_idxs=mu_indices, mu_vals=mu_values
 )
+
+
+# === Histogram of ratio_first (log-binned) ===
+plt.figure(figsize=(8, 6))
+
+ratio_first_clipped = np.clip(ratio_first, eps, None)
+
+log_min = np.floor(np.log10(ratio_first_clipped.min()))
+log_max = np.ceil(np.log10(ratio_first_clipped.max()))
+
+bins = np.logspace(log_min, log_max, 50)
+
+plt.hist(
+  ratio_first_clipped,
+  bins=bins,
+  color="steelblue",
+  edgecolor="black",
+  alpha=0.7,
+)
+
+plt.xscale("log")
+plt.xlabel("Ratio (probs[:,1]/probs[:,0])")
+plt.ylabel("Counts")
+plt.title("Histogram of ratio (first occurrences)")
+
+plt.axvline(1, color="red", linestyle="--", linewidth=1.5, label="ratio = 1")
+
+plt.legend()
+plt.grid(True, which="both", alpha=0.3)
+
+plt.savefig(args.output_path + "/results/ratio_hist.png", dpi=300)
+plt.close()
