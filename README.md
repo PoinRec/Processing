@@ -81,7 +81,7 @@ python *.py path/to/your/h5/file (Some/potential/extra/path)
 
 - `converting.py`: a script to convert your H5 files so it can be used for training of FC classification, as mentioned above (The new `.h5` file will be named same as the old one but begins with `FC_`).
 
--  `distribution.py`: a script to plot the data count distribution ersus various different labels (The output images will be saved under `Distribution/` which is under the same folder as your `.h5` file).
+-  `distribution.py`: a script to plot the data count distribution ersus various different labels (The output images will be saved under `Distribution/` which is under the same folder as your `.h5` file). It would take a bit long (~ minutes) for large dataset.
 
 - `FC*.py`: a script to plot the FC dependence of energy / towall or 2D dependence of both (`FC_check.py`).
 
@@ -123,7 +123,7 @@ Script for analysis of WatChMaL output in prediction mode.
 python *.py path/to/your/output/folder (path/to/your/classification_result.npz)
 ```
 
-I've add a position argument of classification result path for analysis of non-classification tasks, but I don't use that path in current code. In the future, there might be some PID cuts based on that.
+I've added a position argument of classification result path for analysis of non-classification tasks, but that path is not used in current code. In the future, there might be some PID cuts based on that.
 
 ## Tools
 
