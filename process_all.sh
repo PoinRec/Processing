@@ -23,6 +23,7 @@ singularity exec --nv -B ~:/home/zhihao ~/Images/larcv2_ub2204-cuda121-torch251-
 
   cd ../H5
   python distribution.py \"$DATA_PATH\"
+  python FCcheck.py \"$DATA_PATH\"
   if [ -n \"$EVENT_NUM\" ]; then
     python viewing.py \"$DATA_PATH\" \"$POS_PATH\" \"$GEO_PATH\" \"$EVENT_NUM\"
   else

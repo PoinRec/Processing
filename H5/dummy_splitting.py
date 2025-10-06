@@ -13,8 +13,18 @@ idx_path = os.path.join(output_dir, "dummy_split_list.npz")
 
 with h5py.File(data_path, "r") as h5_file:
   event_ids = np.array(h5_file['event_ids'])
+  event_hits_index = np.array(h5_file["event_hits_index"])
+  nhits = np.diff(event_hits_index, append=h5_file["hit_pmt"].shape[0])
+  
+selected_events = np.where(nhits > 0)[0]
+
 
 print(f'Total number of events: {len(event_ids)}')
+
+print(f'Number of events with at least one hit: {len(selected_events)}')
+
+event_ids = event_ids[selected_events]
+
 print(f'Event IDs range from {event_ids.min()} to {event_ids.max()}')
 print(f'Event IDs: {event_ids}')
 

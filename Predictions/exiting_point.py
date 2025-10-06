@@ -1,24 +1,36 @@
 import numpy as np
+import h5py
 import matplotlib.pyplot as plt
 import argparse
 import os
 
-parser = argparse.ArgumentParser(description="Prediction display script for 3D positions")
-parser.add_argument("output_path", type=str,
-                    help="Path to the output folder containing outputs/indices.npy and outputs/predicted_positions.npy")
-parser.add_argument("classification_path", type=str,
-                    help="Path to the npy file containing the classification result")
+
+tank_half_height = 271.4235 / 2.0
+tank_radius = 307.5926 / 2.0
+
+
+parser = argparse.ArgumentParser(description="Prediction display script for exiting points for muons")
+parser.add_argument("merged_output_path", type=str, help="Path to the merged_outputs.h5")
 args = parser.parse_args()
 
-indices_path = args.output_path + "/outputs/indices.npy"
-predicted_positions_path = args.output_path + "/outputs/predicted_positions.npy"
-os.makedirs(args.output_path + "/results", exist_ok=True)
+result_path = os.path.dirname(args.merged_output_path) + "/merged_results"
+os.makedirs(result_path, exist_ok=True)
 
-idxs = np.load(indices_path)                # (M,)
-positions = np.load(predicted_positions_path)  # (M, 3)
-x = positions[:, 0]
-y = positions[:, 1]
-z = positions[:, 2]
+with h5py.File(args.merged_output_path, "r") as f:
+  FC_mu_softmax = np.array(f["FC_mu_softmax"][:])  # shape (N, 2)
+  classification_softmax = np.array(f["classification_softmax"][:])  # shape (N, 2)
+  directions = np.array(f["direction_mu_predicted_directions"][:])  # shape (N, 3)
+  energies = np.array(f["energy_mu_predicted_energies"]).squeeze()  # shape (N, 1)
+  positions = np.array(f["position_mu_predicted_positions"][:])  # shape (N, 3)
+  exit_hit_mask = np.array(f["exit_hit_mask"][:]).astype(bool)  # shape (N,)
+  exit_kind = np.array(f["exit_kind"][:])  # shape (N,) str
+  exit_t = np.array(f["exit_t"][:])  # shape (N,)
+  exit_pos = np.array(f["exit_points"][:])  # shape (N, 3)
+
+
+x = exit_pos[:, 0]
+y = exit_pos[:, 1]
+z = exit_pos[:, 2]
 
 fig = plt.figure(figsize=(7, 7))
 ax = fig.add_subplot(111, projection="3d")
@@ -32,8 +44,6 @@ ax.set_title("3D positions")
 cbar = plt.colorbar(sc, ax=ax, shrink=0.6)
 cbar.set_label("Y")
 
-tank_half_height = 271.4235 / 2.0
-tank_radius = 307.5926 / 2.0
 
 theta = np.linspace(0, 2 * np.pi, 100)
 yy = np.linspace(-tank_half_height, tank_half_height, 60)
@@ -45,7 +55,7 @@ YC = YY
 
 ax.plot_surface(XC, ZC, YC, rstride=1, cstride=1, color='lightgray', alpha=0.15, edgecolor='none')
 
-theta_dense = np.linspace(0, 2 * np.pi, 200)
+theta_dense = np.linspace(0, 2*np.pi, 200)
 xc = tank_radius * np.cos(theta_dense)
 zc = tank_radius * np.sin(theta_dense)
 ax.plot(xc, zc, np.full_like(xc, tank_half_height), color='gray', linewidth=1, alpha=0.6)
@@ -61,7 +71,7 @@ ax.set_zlim(y_min, y_max)
 
 ax.set_box_aspect((x_max - x_min, z_max - z_min, y_max - y_min))
 
-out_path = os.path.join(args.output_path, "results/positions_scatter3d.png")
+out_path = os.path.join(result_path, "positions_scatter3d.png")
 plt.savefig(out_path, dpi=300, bbox_inches="tight")
 plt.close()
 print(f"Saved 3D scatter to {out_path}")
